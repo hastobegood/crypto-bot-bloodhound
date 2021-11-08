@@ -1,0 +1,12 @@
+# IntelliJ IDEA
+.idea
+*.iml
+
+# NodeJS
+node_modules
+dist
+reports
+
+# AWS SAM
+.aws-sam
+samconfig.toml

@@ -1,0 +1,89 @@
+{
+  "StartAt": "Notify listing by SMS and wait for listing time",
+  "States": {
+    "Notify listing by SMS and wait for listing time": {
+      "Type": "Parallel",
+      "End": true,
+      "Branches": [
+        {
+          "StartAt": "Notify listing by SMS",
+          "States": {
+            "Notify listing by SMS": {
+              "Type": "Task",
+              "End": true,
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "OutputPath": "$.Payload",
+              "Parameters": {
+                "Payload.$": "$",
+                "FunctionName": "${NotifyCoinListingFunctionArn}"
+              },
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException"
+                  ],
+                  "IntervalSeconds": 2,
+                  "MaxAttempts": 6,
+                  "BackoffRate": 2
+                },
+                {
+                  "ErrorEquals": [
+                    "States.TaskFailed",
+                    "States.Timeout"
+                  ],
+                  "MaxAttempts": 5
+                },
+                {
+                  "ErrorEquals": [
+                    "States.ALL"
+                  ],
+                  "MaxAttempts": 0
+                }
+              ]
+            }
+          }
+        },
+        {
+          "StartAt": "Wait for listing time",
+          "States": {
+            "Wait for listing time": {
+              "Type": "Wait",
+              "Next": "Execute trading strategy",
+              "TimestampPath": "$.detail.data.waitingDate"
+            },
+            "Execute trading strategy": {
+              "Type": "Task",
+              "End": true,
+              "Resource": "arn:aws:states:::lambda:invoke",
+              "OutputPath": "$.Payload",
+              "Parameters": {
+                "Payload.$": "$",
+                "FunctionName": "${TradeCoinListingFunctionArn}"
+              },
+              "Retry": [
+                {
+                  "ErrorEquals": [
+                    "Lambda.ServiceException",
+                    "Lambda.AWSLambdaException",
+                    "Lambda.SdkClientException"
+                  ],
+                  "IntervalSeconds": 2,
+                  "MaxAttempts": 6,
+                  "BackoffRate": 2
+                },
+                {
+                  "ErrorEquals": [
+                    "States.ALL"
+                  ],
+                  "MaxAttempts": 0
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

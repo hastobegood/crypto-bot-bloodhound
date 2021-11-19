@@ -1,0 +1,208 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  crypto-detector
+
+Transform:
+  - AWS::Serverless-2016-10-31
+
+Parameters:
+  EnvironmentParameter:
+    Type: String
+    Description: Environment where the stack is deployed
+    Default: prod
+    AllowedValues:
+      - prod
+  TracingParameter:
+    Description: Boolean to enable or disable tracing
+    Type: String
+    Default: false
+  BinanceSecretNameParameter:
+    Description: Name of the Binance secret stored in Secrets Manager
+    Type: String
+  BinanceSecretEncryptionKeyParameter:
+    Description: Encryption key used to encrypt the Binance secret in Secrets Manager (either a key id 'key/xxx' or an alias 'alias/xxx')
+    Type: String
+    Default: alias/aws/secretsmanager
+  PhoneNumbersParameter:
+    Description: List of phone numbers separated by comma to send a SMS for each new coin listing (E.164 format)
+    Type: String
+  QuoteAssetParameter:
+    Description: Quote asset to use in trading pair
+    Type: String
+  QuoteAssetQuantityParameter:
+    Description: Quote asset quantity to trade
+    Type: Number
+  RetryIntervalMillisecondsParameter:
+    Description: Retry interval in milliseconds between attempts
+    Type: Number
+    Default: 1000
+
+Conditions:
+  TracingCondition: !Equals [ !Ref TracingParameter, true ]
+
+Mappings:
+  EnvironmentMap:
+    prod:
+      BinanceWebsiteUrl: https://www.binance.com
+      BinanceApiUrl: https://api.binance.com/api
+      ScanCoinListingSchedule: rate(20 minutes)
+
+Globals:
+  Function:
+    Runtime: nodejs14.x
+    MemorySize: 128
+    Timeout: 30
+    AutoPublishAlias: Live
+    Tracing: !If [ TracingCondition, Active, PassThrough ]
+    Environment:
+      Variables:
+        ENV: !Ref EnvironmentParameter
+        REGION: !Ref AWS::Region
+        TRACING: !Ref TracingParameter
+
+Resources:
+  ScanCoinListingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Scan coin listing function
+      CodeUri: dist/webpack/scan-coin-listing-handler
+      Handler: app.handler
+      ReservedConcurrentExecutions: 1
+      Environment:
+        Variables:
+          BINANCE_WEBSITE_URL: !FindInMap [ EnvironmentMap, !Ref EnvironmentParameter, BinanceWebsiteUrl ]
+          COIN_LISTING_TABLE_NAME: !Ref CoinListingTable
+      Events:
+        ScheduleEvent:
+          Type: Schedule
+          Properties:
+            Enabled: true
+            Schedule: !FindInMap [ EnvironmentMap, !Ref EnvironmentParameter, ScanCoinListingSchedule ]
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref CoinListingTable
+        - DynamoDBWritePolicy:
+            TableName: !Ref CoinListingTable
+        - EventBridgePutEventsPolicy:
+            EventBusName: default
+
+  NotifyCoinListingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Notify coin listing function
+      CodeUri: dist/webpack/notify-coin-listing-handler
+      Handler: app.handler
+      Environment:
+        Variables:
+          PHONE_NUMBERS: !Ref PhoneNumbersParameter
+      Policies:
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - sns:Publish
+              Resource:
+                - '*'
+
+  TradeCoinListingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Trade coin listing function
+      CodeUri: dist/webpack/trade-coin-listing-handler
+      Handler: app.handler
+      MemorySize: 1024
+      Timeout: 900
+      Environment:
+        Variables:
+          BINANCE_API_URL: !FindInMap [ EnvironmentMap, !Ref EnvironmentParameter, BinanceApiUrl ]
+          BINANCE_SECRET_NAME: !Ref BinanceSecretNameParameter
+          QUOTE_ASSET: !Ref QuoteAssetParameter
+          QUOTE_ASSET_QUANTITY: !Ref QuoteAssetQuantityParameter
+          RETRY_INTERVAL_MILLISECONDS: !Ref RetryIntervalMillisecondsParameter
+      Policies:
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${BinanceSecretNameParameter}*
+        - Version: 2012-10-17
+          Statement:
+            - Effect: Allow
+              Action:
+                - kms:Decrypt
+              Resource: !Sub arn:aws:kms:${AWS::Region}:${AWS::AccountId}:${BinanceSecretEncryptionKeyParameter}
+
+  CoinListingStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Type: STANDARD
+      DefinitionUri: aws/coin-listing-state-machine.json
+      DefinitionSubstitutions:
+        NotifyCoinListingFunctionArn: !GetAtt NotifyCoinListingFunction.Arn
+        TradeCoinListingFunctionArn: !GetAtt TradeCoinListingFunction.Arn
+      Events:
+        EventBridgeRuleEvent:
+          Type: EventBridgeRule
+          Properties:
+            Pattern:
+              source:
+                - hastobegood.cryptodetector
+              detail-type:
+                - NewCoinListing
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref NotifyCoinListingFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref TradeCoinListingFunction
+
+  CoinListingTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      SSESpecification:
+        SSEEnabled: true
+      KeySchema:
+        - AttributeName: pk
+          KeyType: HASH
+        - AttributeName: sk
+          KeyType: RANGE
+      AttributeDefinitions:
+        - AttributeName: pk
+          AttributeType: S
+        - AttributeName: sk
+          AttributeType: S
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+
+Outputs:
+  ScanCoinListingFunctionName:
+    Description: Scan coin listing function name
+    Value: !Ref ScanCoinListingFunction
+  ScanCoinListingFunctionArn:
+    Description: Scan coin listing function ARN
+    Value: !GetAtt ScanCoinListingFunction.Arn
+
+  NotifyCoinListingFunctionName:
+    Description: Notify coin listing function name
+    Value: !Ref NotifyCoinListingFunction
+  NotifyCoinListingFunctionArn:
+    Description: Notify coin listing function ARN
+    Value: !GetAtt NotifyCoinListingFunction.Arn
+
+  TradeCoinListingFunctionName:
+    Description: Trade coin listing function name
+    Value: !Ref TradeCoinListingFunction
+  TradeCoinListingFunctionArn:
+    Description: Trade coin listing function ARN
+    Value: !GetAtt TradeCoinListingFunction.Arn
+
+  CoinListingStateMachineArn:
+    Description: Coin listing state machine ARN
+    Value: !Ref CoinListingStateMachine
+  CoinListingStateMachineName:
+    Description: Coin listing state machine name
+    Value: !GetAtt CoinListingStateMachine.Name
+
+  CoinListingTableName:
+    Description: Coin listing table name
+    Value: !Ref CoinListingTable
+  CoinListingTableArn:
+    Description: Coin listing table ARN
+    Value: !GetAtt CoinListingTable.Arn

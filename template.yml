@@ -45,7 +45,7 @@ Mappings:
     prod:
       BinanceWebsiteUrl: https://www.binance.com
       BinanceApiUrl: https://api.binance.com/api
-      ScanCoinListingSchedule: rate(20 minutes)
+      ScanCoinListingSchedule: rate(10 minutes)
 
 Globals:
   Function:
@@ -110,8 +110,8 @@ Resources:
       Description: Trade coin listing function
       CodeUri: dist/webpack/trade-coin-listing-handler
       Handler: app.handler
-      MemorySize: 1024
-      Timeout: 900
+      MemorySize: 2048
+      Timeout: 60
       Environment:
         Variables:
           BINANCE_API_URL: !FindInMap [ EnvironmentMap, !Ref EnvironmentParameter, BinanceApiUrl ]

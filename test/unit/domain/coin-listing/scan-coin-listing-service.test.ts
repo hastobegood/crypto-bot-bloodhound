@@ -89,7 +89,7 @@ describe('ScanCoinListingService', () => {
 
       beforeEach(() => {
         announcement1 = buildDefaultAnnouncement();
-        announcement2 = { ...buildDefaultAnnouncement(), date: new Date(date.valueOf() + 60 * 2 * 1_000) };
+        announcement2 = { ...buildDefaultAnnouncement(), date: new Date(date.valueOf() + 5 * 1_000) };
         coinListing1 = buildDefaultCoinListing();
 
         getAnnouncementServiceMock.getAllByExchange.mockResolvedValueOnce([announcement1, announcement2]);
@@ -122,7 +122,7 @@ describe('ScanCoinListingService', () => {
             exchange: 'Binance',
             creationDate: date,
             listingDate: announcement2.date,
-            waitingDate: new Date(announcement2.date.valueOf() - 60 * 2 * 1_000),
+            waitingDate: new Date(announcement2.date.valueOf() - 5 * 1_000),
           },
         ]);
 
@@ -136,7 +136,7 @@ describe('ScanCoinListingService', () => {
             exchange: 'Binance',
             creationDate: date,
             listingDate: announcement2.date,
-            waitingDate: new Date(announcement2.date.valueOf() - 60 * 2 * 1_000),
+            waitingDate: new Date(announcement2.date.valueOf() - 5 * 1_000),
           },
         ]);
       });
@@ -149,7 +149,7 @@ describe('ScanCoinListingService', () => {
 
       beforeEach(() => {
         announcement1 = buildDefaultAnnouncement();
-        announcement2 = { ...buildDefaultAnnouncement(), date: new Date(date.valueOf() + 60 * 2 * 1_000 - 1) };
+        announcement2 = { ...buildDefaultAnnouncement(), date: new Date(date.valueOf() + 5 * 1_000 - 1) };
         coinListing1 = buildDefaultCoinListing();
 
         getAnnouncementServiceMock.getAllByExchange.mockResolvedValueOnce([announcement1, announcement2]);

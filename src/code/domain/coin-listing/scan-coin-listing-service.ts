@@ -23,7 +23,7 @@ export class ScanCoinListingService {
     }
 
     const creationDate = new Date();
-    const waitingDate = announcement.date.valueOf() - 60 * 2 * 1_000;
+    const waitingDate = announcement.date.valueOf() - 5 * 1_000;
     if (creationDate.valueOf() > waitingDate) {
       return null;
     }

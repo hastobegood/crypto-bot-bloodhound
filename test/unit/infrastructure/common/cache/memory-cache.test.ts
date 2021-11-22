@@ -29,7 +29,7 @@ describe('MemoryCache', () => {
     describe('When ttl is has expired', () => {
       it('Then value is removed from cache', async () => {
         await memoryCache.set('1', 'value');
-        await new Promise((resolve) => setTimeout(resolve, ttl + 1));
+        await new Promise((resolve) => setTimeout(resolve, ttl + 10));
         expect(await memoryCache.get('1')).toBeNull();
       });
     });
@@ -37,7 +37,7 @@ describe('MemoryCache', () => {
     describe('When ttl is has not expired', () => {
       it('Then value is still in the cache', async () => {
         await memoryCache.set('1', 'value');
-        await new Promise((resolve) => setTimeout(resolve, ttl - 1));
+        await new Promise((resolve) => setTimeout(resolve, ttl - 10));
         expect(await memoryCache.get('1')).toEqual('value');
       });
     });

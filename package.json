@@ -33,7 +33,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@types/aws-lambda": "^8.10.85",
+    "@types/aws-lambda": "^8.10.88",
     "@types/copy-webpack-plugin": "^8.0.1",
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "^27.0.3",

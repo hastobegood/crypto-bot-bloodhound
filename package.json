@@ -28,7 +28,7 @@
     "axios": "^0.24.0",
     "keyv": "^4.0.5",
     "lodash": "^4.17.21",
-    "node-html-parser": "^5.1.0",
+    "node-html-parser": "^5.2.0",
     "pino": "^7.6.2",
     "serialize-error": "^9.0.0",
     "source-map-support": "^0.5.21",

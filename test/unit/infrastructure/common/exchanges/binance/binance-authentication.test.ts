@@ -1,7 +1,6 @@
 import { mocked } from 'ts-jest/utils';
 import { BinanceAuthentication } from '../../../../../../src/code/infrastructure/common/exchanges/binance/binance-authentication';
 import { SecretsManagerClient } from '@aws-sdk/client-secrets-manager';
-import crypto from 'crypto';
 
 const smClientMock = mocked(jest.genMockFromModule<SecretsManagerClient>('@aws-sdk/client-secrets-manager'), true);
 
@@ -13,27 +12,73 @@ beforeEach(() => {
 });
 
 describe('BinanceAuthentication', () => {
-  describe('Give a signature to generate', () => {
+  describe('Give the api url to retrieve', () => {
     describe('When multiple requests', () => {
-      let signature: string;
-
       beforeEach(() => {
-        const hmac = crypto.createHmac('sha256', 'my-secret-key');
-        const result = hmac.update('my-parameters');
-        signature = result.digest('hex');
-
         smClientMock.send.mockImplementation(() => ({
-          SecretString: '{"apiKey": "my-api-key", "secretKey": "my-secret-key"}',
+          SecretString: '{"binance": {"apiUrl": "my-api-url"}}',
         }));
       });
 
-      it('Then same signature is always returned', async () => {
-        let result = await binanceAuthentication.getSignature('my-parameters');
-        expect(result).toEqual(signature);
-        result = await binanceAuthentication.getSignature('my-parameters');
-        expect(result).toEqual(signature);
-        result = await binanceAuthentication.getSignature('my-parameters');
-        expect(result).toEqual(signature);
+      it('Then same api url is always returned', async () => {
+        let result = await binanceAuthentication.getApiUrl();
+        expect(result).toEqual('my-api-url');
+        result = await binanceAuthentication.getApiUrl();
+        expect(result).toEqual('my-api-url');
+        result = await binanceAuthentication.getApiUrl();
+        expect(result).toEqual('my-api-url');
+
+        expect(smClientMock.send).toHaveBeenCalledTimes(1);
+        const sendParams = smClientMock.send.mock.calls[0];
+        expect(sendParams.length).toEqual(1);
+        expect(sendParams[0].input).toEqual({
+          SecretId: 'my-secrets',
+        });
+      });
+    });
+  });
+
+  describe('Give the api key to retrieve', () => {
+    describe('When multiple requests', () => {
+      beforeEach(() => {
+        smClientMock.send.mockImplementation(() => ({
+          SecretString: '{"binance": {"apiKey": "my-api-key"}}',
+        }));
+      });
+
+      it('Then same api key is always returned', async () => {
+        let result = await binanceAuthentication.getApiKey();
+        expect(result).toEqual('my-api-key');
+        result = await binanceAuthentication.getApiKey();
+        expect(result).toEqual('my-api-key');
+        result = await binanceAuthentication.getApiKey();
+        expect(result).toEqual('my-api-key');
+
+        expect(smClientMock.send).toHaveBeenCalledTimes(1);
+        const sendParams = smClientMock.send.mock.calls[0];
+        expect(sendParams.length).toEqual(1);
+        expect(sendParams[0].input).toEqual({
+          SecretId: 'my-secrets',
+        });
+      });
+    });
+  });
+
+  describe('Give the secret key to retrieve', () => {
+    describe('When multiple requests', () => {
+      beforeEach(() => {
+        smClientMock.send.mockImplementation(() => ({
+          SecretString: '{"binance": {"secretKey": "my-secret-key"}}',
+        }));
+      });
+
+      it('Then same secret key is always returned', async () => {
+        let result = await binanceAuthentication.getSecretKey();
+        expect(result).toEqual('my-secret-key');
+        result = await binanceAuthentication.getSecretKey();
+        expect(result).toEqual('my-secret-key');
+        result = await binanceAuthentication.getSecretKey();
+        expect(result).toEqual('my-secret-key');
 
         expect(smClientMock.send).toHaveBeenCalledTimes(1);
         const sendParams = smClientMock.send.mock.calls[0];

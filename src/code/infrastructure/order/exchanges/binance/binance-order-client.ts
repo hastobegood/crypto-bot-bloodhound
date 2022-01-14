@@ -1,82 +1,61 @@
-import { ExchangeOrderClient } from '../exchange-order-client';
-import { TickerExchange } from '../../../../domain/ticker/model/ticker';
-import { Order, TransientOrder } from '../../../../domain/order/model/order';
-import { fromBinanceOrderStatus, toBinanceOrderSide, toBinanceSymbol } from '../../../common/exchanges/binance/binance-converter';
-import { BinanceAuthentication } from '../../../common/exchanges/binance/binance-authentication';
-import { AxiosRequestConfig } from 'axios';
-import { axiosInstance } from '../../../../configuration/http/axios';
-import { BinanceOrder } from '../../../common/exchanges/binance/model/binance-order';
+import { fromBinanceOrderStatus, toBinanceOrderSide, toBinanceOrderType, toBinanceSymbol } from '../../../common/exchanges/binance/binance-converter';
 import { round } from '../../../../configuration/util/math';
 import { extractAssets } from '../../../../configuration/util/symbol';
+import { ExchangeOrderClient } from '../exchange-order-client';
+import { Order, OrderExchange, TransientOrder } from '../../../../domain/order/model/order';
+import { Client, SendOrderCommand, SendOrderInput, SendOrderOutput } from '@hastobegood/crypto-clients-binance';
 
 export class BinanceOrderClient implements ExchangeOrderClient {
-  constructor(private url: string, private binanceAuthentication: BinanceAuthentication) {}
+  constructor(private client: Client) {}
 
-  getExchange(): TickerExchange {
+  getExchange(): OrderExchange {
     return 'Binance';
   }
 
   async sendOrder(transientOrder: TransientOrder): Promise<Order> {
-    const queryParameters = this.#getQueryParameters(transientOrder);
-    const querySignature = await this.binanceAuthentication.getSignature(queryParameters);
-    const queryUrl = `/v3/order?${queryParameters}&signature=${querySignature}`;
-    const queryConfig = this.#getQueryConfig(await this.binanceAuthentication.getApiKey());
-    const response = await axiosInstance.post<BinanceOrder>(queryUrl, null, queryConfig);
+    const input = this.#buildSendOrderCommandInput(transientOrder);
+    const output = await this.client.send(new SendOrderCommand(input));
 
-    const executedQuantityAndPrice = this.#calculateExecutedQuantityAndPrice(response.data);
+    const executedQuantityAndPrice = this.#calculateExecutedQuantityAndPrice(output.data);
 
     // when commission is paid with the base asset, commission quantity should be deducted from executed quantity
-    if (executedQuantityAndPrice && response.data.fills.length > 0) {
+    if (executedQuantityAndPrice && output.data.fills.length > 0) {
       const basetAsset = extractAssets(transientOrder.symbol).baseAsset;
-      const fills = response.data.fills.filter((fill) => fill.commissionAsset === basetAsset);
+      const fills = output.data.fills.filter((fill) => fill.commissionAsset === basetAsset);
       executedQuantityAndPrice.quantity -= fills.reduce((total, current) => total + +current.commission, 0);
     }
 
     return {
       ...transientOrder,
-      status: fromBinanceOrderStatus(response.data.status),
-      externalId: response.data.orderId.toString(),
-      externalStatus: response.data.status,
-      transactionDate: new Date(response.data.transactTime),
+      status: fromBinanceOrderStatus(output.data.status),
+      externalId: output.data.orderId.toString(),
+      externalStatus: output.data.status,
+      transactionDate: new Date(output.data.transactTime),
       executedQuantity: executedQuantityAndPrice?.quantity ? round(executedQuantityAndPrice.quantity, 15) : undefined,
       executedPrice: executedQuantityAndPrice?.price ? round(executedQuantityAndPrice.price, 15) : undefined,
     };
   }
 
-  #getQueryParameters(transientOrder: TransientOrder): string {
-    const symbol = toBinanceSymbol(transientOrder.symbol);
-    const side = toBinanceOrderSide(transientOrder.side);
-    const quantity = `${transientOrder.quote ? 'quoteOrderQty' : 'quantity'}=${transientOrder.requestedQuantity}`;
-    const price = transientOrder.requestedPrice;
-
-    switch (transientOrder.type) {
-      case 'Market':
-        return `symbol=${symbol}&side=${side}&type=MARKET&${quantity}&newOrderRespType=FULL&timestamp=${new Date().valueOf()}`;
-      case 'Limit':
-        return `symbol=${symbol}&side=${side}&type=LIMIT&${quantity}&price=${price}&timeInForce=GTC&newOrderRespType=FULL&timestamp=${new Date().valueOf()}`;
-      default:
-        throw new Error(`Unsupported '${transientOrder.type}' Binance order type`);
-    }
-  }
-
-  #getQueryConfig(apiKey: string): AxiosRequestConfig {
+  #buildSendOrderCommandInput(transientOrder: TransientOrder): SendOrderInput {
     return {
-      baseURL: this.url,
-      headers: {
-        'X-MBX-APIKEY': apiKey,
-      },
+      symbol: toBinanceSymbol(transientOrder.symbol),
+      side: toBinanceOrderSide(transientOrder.side),
+      type: toBinanceOrderType(transientOrder.type),
+      quoteOrderQty: transientOrder.quote ? transientOrder.requestedQuantity : undefined,
+      quantity: !transientOrder.quote ? transientOrder.requestedQuantity : undefined,
+      price: transientOrder.requestedPrice,
     };
   }
 
-  #calculateExecutedQuantityAndPrice(binanceOrder: BinanceOrder): { quantity: number; price: number } | undefined {
-    const totalQuantity = +binanceOrder.executedQty;
+  #calculateExecutedQuantityAndPrice(sendOrderOutput: SendOrderOutput): { quantity: number; price: number } | undefined {
+    const totalQuantity = +sendOrderOutput.executedQty;
     if (totalQuantity === 0) {
       return undefined;
     }
 
     return {
       quantity: totalQuantity,
-      price: +binanceOrder.price > 0 ? +binanceOrder.price : +binanceOrder.cummulativeQuoteQty / totalQuantity,
+      price: +sendOrderOutput.price > 0 ? +sendOrderOutput.price : +sendOrderOutput.cummulativeQuoteQty / totalQuantity,
     };
   }
 }

@@ -1,44 +1,50 @@
-import { BinanceOrder, BinanceOrderFill } from '../../../../../../src/code/infrastructure/common/exchanges/binance/model/binance-order';
-import { randomFromList, randomNumber, randomString } from '../../../../random-test-builder';
+import { randomFromList, randomNumber, randomString, randomSymbol } from '../../../../random-test-builder';
+import { SendOrderOutput, SendOrderOutputFill } from '@hastobegood/crypto-clients-binance';
 
-export const buildDefaultBinanceOrder = (): BinanceOrder => {
-  return buildDefaultBinanceMarketOrder();
-};
-
-export const buildDefaultBinanceMarketOrder = (): BinanceOrder => {
+export const buildDefaultBinanceSendMarketOrderOutput = (): SendOrderOutput => {
   return {
+    symbol: randomSymbol(),
     orderId: randomNumber(),
+    orderListId: -1,
+    clientOrderId: randomString(),
     transactTime: new Date().valueOf(),
-    type: 'MARKET',
-    side: randomFromList(['BUY', 'SELL']),
-    status: 'FILLED',
-    price: '0',
+    price: '0.00000000',
+    origQty: randomNumber(10, 100).toString(),
     executedQty: randomNumber(10, 100).toString(),
     cummulativeQuoteQty: randomNumber(10, 100).toString(),
-    fills: [buildDefaultBinanceOrderFill(), buildDefaultBinanceOrderFill()],
+    status: 'FILLED',
+    timeInForce: 'GTC',
+    type: 'MARKET',
+    side: randomFromList(['BUY', 'SELL']),
+    fills: [buildDefaultBinanceSendOrderOutputFill(), buildDefaultBinanceSendOrderOutputFill()],
   };
 };
 
-export const buildDefaultBinanceLimitOrder = (): BinanceOrder => {
+export const buildDefaultBinanceSendLimitOrderOutput = (): SendOrderOutput => {
   return {
+    symbol: randomSymbol(),
     orderId: randomNumber(),
+    orderListId: -1,
+    clientOrderId: randomString(),
     transactTime: new Date().valueOf(),
+    price: randomNumber(1, 1_000).toString(),
+    origQty: randomNumber(10, 100).toString(),
+    executedQty: '0.00000000',
+    cummulativeQuoteQty: '0.00000000',
+    status: 'NEW',
+    timeInForce: 'GTC',
     type: 'LIMIT',
     side: randomFromList(['BUY', 'SELL']),
-    status: 'NEW',
-    price: '0',
-    executedQty: '0',
-    cummulativeQuoteQty: '0',
     fills: [],
   };
 };
 
-export const buildDefaultBinanceOrderFill = (): BinanceOrderFill => {
+export const buildDefaultBinanceSendOrderOutputFill = (): SendOrderOutputFill => {
   return {
-    tradeId: randomNumber(),
-    price: randomNumber(1_000, 10_000).toString(),
-    qty: randomNumber(10, 1_000).toString(),
+    price: randomNumber(1, 1_000).toString(),
+    qty: randomNumber(10, 100).toString(),
     commission: randomNumber(1, 10).toString(),
     commissionAsset: randomString(5),
+    tradeId: randomNumber(),
   };
 };

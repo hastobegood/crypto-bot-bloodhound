@@ -8,7 +8,7 @@ const axiosInstanceMock = mocked(axiosInstance, true);
 
 let binanceCoinListingClient: BinanceAnnouncementClient;
 beforeEach(() => {
-  binanceCoinListingClient = new BinanceAnnouncementClient('my-url');
+  binanceCoinListingClient = new BinanceAnnouncementClient();
 });
 
 describe('BinanceAnnouncementClient', () => {
@@ -37,7 +37,7 @@ describe('BinanceAnnouncementClient', () => {
         expect(axiosInstanceMock.get).toHaveBeenCalledTimes(1);
         const getParams = axiosInstanceMock.get.mock.calls[0];
         expect(getParams.length).toEqual(1);
-        expect(getParams[0]).toEqual('my-url/en/support/announcement/c-48');
+        expect(getParams[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
       });
     });
 
@@ -56,7 +56,7 @@ describe('BinanceAnnouncementClient', () => {
           expect(axiosInstanceMock.get).toHaveBeenCalledTimes(1);
           const getParams = axiosInstanceMock.get.mock.calls[0];
           expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('my-url/en/support/announcement/c-48');
+          expect(getParams[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
         });
       });
 
@@ -74,7 +74,7 @@ describe('BinanceAnnouncementClient', () => {
           expect(axiosInstanceMock.get).toHaveBeenCalledTimes(1);
           const getParams = axiosInstanceMock.get.mock.calls[0];
           expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('my-url/en/support/announcement/c-48');
+          expect(getParams[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
         });
       });
 
@@ -92,7 +92,7 @@ describe('BinanceAnnouncementClient', () => {
           expect(axiosInstanceMock.get).toHaveBeenCalledTimes(1);
           const getParams = axiosInstanceMock.get.mock.calls[0];
           expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('my-url/en/support/announcement/c-48');
+          expect(getParams[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
         });
       });
 
@@ -114,10 +114,10 @@ describe('BinanceAnnouncementClient', () => {
           expect(axiosInstanceMock.get).toHaveBeenCalledTimes(2);
           let getParams = axiosInstanceMock.get.mock.calls[0];
           expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('my-url/en/support/announcement/c-48');
+          expect(getParams[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
           getParams = axiosInstanceMock.get.mock.calls[1];
           expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('my-url/details-coin1');
+          expect(getParams[0]).toEqual('https://www.binance.com/details-coin1');
         });
       });
 
@@ -139,17 +139,17 @@ describe('BinanceAnnouncementClient', () => {
               exchange: 'Binance',
               coin: 'COIN1',
               date: new Date('2021-08-22T16:25:00.000Z'),
-              url: 'my-url/details-coin1',
+              url: 'https://www.binance.com/details-coin1',
             },
           ]);
 
           expect(axiosInstanceMock.get).toHaveBeenCalledTimes(2);
           let getParams = axiosInstanceMock.get.mock.calls[0];
           expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('my-url/en/support/announcement/c-48');
+          expect(getParams[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
           getParams = axiosInstanceMock.get.mock.calls[1];
           expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('my-url/details-coin1');
+          expect(getParams[0]).toEqual('https://www.binance.com/details-coin1');
         });
       });
     });

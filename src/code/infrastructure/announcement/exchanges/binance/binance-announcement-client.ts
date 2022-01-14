@@ -8,8 +8,6 @@ const linkRegex = new RegExp('Binance Will List .+ \\((.+)\\).*');
 const announcementRegex = new RegExp('Binance will list .+ at ([0-9]{4})-([0-9]{2})-([0-9]{2}) ([0-9]{2}):([0-9]{2}) \\(UTC\\)');
 
 export class BinanceAnnouncementClient implements ExchangeAnnouncementClient {
-  constructor(private url: string) {}
-
   getExchange(): AnnouncementExchange {
     return 'Binance';
   }
@@ -21,7 +19,7 @@ export class BinanceAnnouncementClient implements ExchangeAnnouncementClient {
   }
 
   async #extractLinks(): Promise<Link[]> {
-    const response = await axiosInstance.get<string>(`${this.url}/en/support/announcement/c-48`);
+    const response = await axiosInstance.get<string>('https://www.binance.com/en/support/announcement/c-48');
     const rootElement = parse(response.data);
 
     const links = linkIds.map((linkId) => this.#extractLink(linkId, rootElement));
@@ -37,7 +35,7 @@ export class BinanceAnnouncementClient implements ExchangeAnnouncementClient {
       if (matches && matches.length === 2) {
         return {
           coin: matches[1],
-          url: `${this.url}${href}`,
+          url: `https://www.binance.com${href}`,
         };
       }
     }

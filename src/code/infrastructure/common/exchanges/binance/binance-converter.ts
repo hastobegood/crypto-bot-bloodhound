@@ -1,21 +1,10 @@
 import { extractAssets } from '../../../../configuration/util/symbol';
-import { BinanceOrderSide, BinanceOrderStatus } from './model/binance-order';
-import { OrderSide, OrderStatus } from '../../../../domain/order/model/order';
+import { OrderSide as BinanceOrderSide, OrderStatus as BinanceOrderStatus, OrderType as BinanceOrderType } from '@hastobegood/crypto-clients-binance';
+import { OrderSide, OrderStatus, OrderType } from '../../../../domain/order/model/order';
 
 export const toBinanceSymbol = (symbol: string): string => {
   const assets = extractAssets(symbol);
   return `${assets.baseAsset}${assets.quoteAsset}`;
-};
-
-export const fromBinanceOrderSide = (side: BinanceOrderSide): OrderSide => {
-  switch (side) {
-    case 'BUY':
-      return 'Buy';
-    case 'SELL':
-      return 'Sell';
-    default:
-      throw new Error(`Unsupported '${side}' Binance order side`);
-  }
 };
 
 export const toBinanceOrderSide = (side: OrderSide): BinanceOrderSide => {
@@ -26,6 +15,17 @@ export const toBinanceOrderSide = (side: OrderSide): BinanceOrderSide => {
       return 'SELL';
     default:
       throw new Error(`Unsupported '${side}' Binance order side`);
+  }
+};
+
+export const toBinanceOrderType = (side: OrderType): BinanceOrderType => {
+  switch (side) {
+    case 'Market':
+      return 'MARKET';
+    case 'Limit':
+      return 'LIMIT';
+    default:
+      throw new Error(`Unsupported '${side}' Binance order type`);
   }
 };
 

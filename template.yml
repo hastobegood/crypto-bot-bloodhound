@@ -16,11 +16,11 @@ Parameters:
     Description: Boolean to enable or disable tracing
     Type: String
     Default: false
-  BinanceSecretNameParameter:
-    Description: Name of the Binance secret stored in Secrets Manager
+  ExchangesSecretNameParameter:
+    Description: Name of the exchanges secret stored in Secrets Manager
     Type: String
-  BinanceSecretEncryptionKeyParameter:
-    Description: Encryption key used to encrypt the Binance secret in Secrets Manager (either a key id 'key/xxx' or an alias 'alias/xxx')
+  ExchangesSecretEncryptionKeyParameter:
+    Description: Encryption key used to encrypt the exchanges secret in Secrets Manager (either a key id 'key/xxx' or an alias 'alias/xxx')
     Type: String
     Default: alias/aws/secretsmanager
   PhoneNumbersParameter:
@@ -43,8 +43,6 @@ Conditions:
 Mappings:
   EnvironmentMap:
     prod:
-      BinanceWebsiteUrl: https://www.binance.com
-      BinanceApiUrl: https://api.binance.com/api
       ScanCoinListingSchedule: rate(10 minutes)
 
 Globals:
@@ -70,7 +68,6 @@ Resources:
       ReservedConcurrentExecutions: 1
       Environment:
         Variables:
-          BINANCE_WEBSITE_URL: !FindInMap [ EnvironmentMap, !Ref EnvironmentParameter, BinanceWebsiteUrl ]
           COIN_LISTING_TABLE_NAME: !Ref CoinListingTable
       Events:
         ScheduleEvent:
@@ -114,20 +111,19 @@ Resources:
       Timeout: 60
       Environment:
         Variables:
-          BINANCE_API_URL: !FindInMap [ EnvironmentMap, !Ref EnvironmentParameter, BinanceApiUrl ]
-          BINANCE_SECRET_NAME: !Ref BinanceSecretNameParameter
+          EXCHANGES_SECRET_NAME: !Ref ExchangesSecretNameParameter
           QUOTE_ASSET: !Ref QuoteAssetParameter
           QUOTE_ASSET_QUANTITY: !Ref QuoteAssetQuantityParameter
           RETRY_INTERVAL_MILLISECONDS: !Ref RetryIntervalMillisecondsParameter
       Policies:
         - AWSSecretsManagerGetSecretValuePolicy:
-            SecretArn: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${BinanceSecretNameParameter}*
+            SecretArn: !Sub arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${ExchangesSecretNameParameter}*
         - Version: 2012-10-17
           Statement:
             - Effect: Allow
               Action:
                 - kms:Decrypt
-              Resource: !Sub arn:aws:kms:${AWS::Region}:${AWS::AccountId}:${BinanceSecretEncryptionKeyParameter}
+              Resource: !Sub arn:aws:kms:${AWS::Region}:${AWS::AccountId}:${ExchangesSecretEncryptionKeyParameter}
 
   CoinListingStateMachine:
     Type: AWS::Serverless::StateMachine

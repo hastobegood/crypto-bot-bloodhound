@@ -2,6 +2,7 @@ import { Context, EventBridgeEvent } from 'aws-lambda';
 import { smClient } from '../code/configuration/aws/secrets-manager';
 import { handleEvent } from './handler-utils';
 import { BinanceAuthentication } from '../code/infrastructure/common/exchanges/binance/binance-authentication';
+import { Client } from '@hastobegood/crypto-clients-binance';
 import { BinanceTickerClient } from '../code/infrastructure/ticker/exchanges/binance/binance-ticker-client';
 import { HttpTickerClient } from '../code/infrastructure/ticker/http-ticker-client';
 import { GetTickerService } from '../code/domain/ticker/get-ticker-service';
@@ -12,13 +13,14 @@ import { TradeCoinListingService } from '../code/domain/coin-listing/trade-coin-
 import { TradeCoinListingRecordConsumer } from '../code/application/coin-listing/trade-coin-listing-record-consumer';
 import { CoinListingEvent } from '../code/infrastructure/coin-listing/eb-coin-listing-publisher';
 
-const binanceAuthentication = new BinanceAuthentication(process.env.BINANCE_SECRET_NAME, smClient);
+const binanceAuthentication = new BinanceAuthentication(process.env.EXCHANGES_SECRET_NAME, smClient);
+const binanceClient = new Client(binanceAuthentication);
 
-const binanceTickerClient = new BinanceTickerClient(process.env.BINANCE_API_URL);
+const binanceTickerClient = new BinanceTickerClient(binanceClient);
 const tickerClient = new HttpTickerClient([binanceTickerClient]);
 const getTickerService = new GetTickerService(tickerClient);
 
-const binanceOrderClient = new BinanceOrderClient(process.env.BINANCE_API_URL, binanceAuthentication);
+const binanceOrderClient = new BinanceOrderClient(binanceClient);
 const orderClient = new HttpOrderClient([binanceOrderClient]);
 const createOrderService = new CreateOrderService(getTickerService, orderClient);
 

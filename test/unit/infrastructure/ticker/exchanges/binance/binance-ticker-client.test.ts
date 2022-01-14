@@ -1,16 +1,19 @@
-import { axiosInstance } from '../../../../../../src/code/configuration/http/axios';
 import { mocked } from 'ts-jest/utils';
+import {
+  buildBinanceGetExchangeInfoOutputSymbolLotSizeFilter,
+  buildBinanceGetExchangeInfoOutputSymbolPriceFilter,
+  buildDefaultBinanceGetExchangeInfoOutput,
+} from '../../../../../builders/infrastructure/common/exchanges/binance/binance-ticker-test-builder';
+import { Client, GetExchangeInfoOutput } from '@hastobegood/crypto-clients-binance';
 import { BinanceTickerClient } from '../../../../../../src/code/infrastructure/ticker/exchanges/binance/binance-ticker-client';
-import { buildBinanceExchangeInfoLotSizeFilter, buildBinanceExchangeInfoPriceFilter, buildDefaultBinanceExchangeInfo } from '../../../../../builders/infrastructure/common/exchanges/binance/binance-exchange-info-test-builder';
-import { BinanceExchangeInfo } from '../../../../../../src/code/infrastructure/common/exchanges/binance/model/binance-exchange-info';
 
-jest.mock('../../../../../../src/code/configuration/http/axios');
-
-const axiosInstanceMock = mocked(axiosInstance, true);
+const clientMock = mocked(jest.genMockFromModule<Client>('@hastobegood/crypto-clients-binance'), true);
 
 let binanceTickerClient: BinanceTickerClient;
 beforeEach(() => {
-  binanceTickerClient = new BinanceTickerClient('my-url');
+  clientMock.send = jest.fn();
+
+  binanceTickerClient = new BinanceTickerClient(clientMock);
 });
 
 describe('BinanceTickerClient', () => {
@@ -21,15 +24,17 @@ describe('BinanceTickerClient', () => {
   });
 
   describe('Given a ticker to retrieve by its symbol', () => {
-    let binanceExchangeInfo: BinanceExchangeInfo;
+    let getExchangeInfoOutput: GetExchangeInfoOutput;
 
     describe('When ticker is found', () => {
       beforeEach(() => {
-        binanceExchangeInfo = buildDefaultBinanceExchangeInfo();
-        binanceExchangeInfo.symbols[0].filters = [buildBinanceExchangeInfoLotSizeFilter('0.00000100'), buildBinanceExchangeInfoPriceFilter('1.00000000')];
+        getExchangeInfoOutput = buildDefaultBinanceGetExchangeInfoOutput();
+        getExchangeInfoOutput.symbols[0].filters = [buildBinanceGetExchangeInfoOutputSymbolLotSizeFilter('0.00000100'), buildBinanceGetExchangeInfoOutputSymbolPriceFilter('1.00000000')];
 
-        axiosInstanceMock.get.mockResolvedValueOnce({
-          data: binanceExchangeInfo,
+        clientMock.send.mockResolvedValueOnce({
+          status: 200,
+          headers: {},
+          data: getExchangeInfoOutput,
         });
       });
 
@@ -38,18 +43,19 @@ describe('BinanceTickerClient', () => {
         expect(result).toEqual({
           exchange: 'Binance',
           symbol: 'ABC#DEF',
-          baseAssetPrecision: binanceExchangeInfo.symbols[0].baseAssetPrecision,
-          quoteAssetPrecision: binanceExchangeInfo.symbols[0].quoteAssetPrecision,
+          baseAssetPrecision: getExchangeInfoOutput.symbols[0].baseAssetPrecision,
+          quoteAssetPrecision: getExchangeInfoOutput.symbols[0].quoteAssetPrecision,
           quantityPrecision: 6,
           pricePrecision: 0,
         });
 
-        expect(axiosInstanceMock.get).toHaveBeenCalledTimes(1);
-        const getParams = axiosInstanceMock.get.mock.calls[0];
-        expect(getParams.length).toEqual(2);
-        expect(getParams[0]).toEqual('/v3/exchangeInfo?symbol=ABCDEF');
-        expect(getParams[1]).toEqual({
-          baseURL: 'my-url',
+        expect(clientMock.send).toHaveBeenCalledTimes(1);
+        const sendParams = clientMock.send.mock.calls[0];
+        expect(sendParams.length).toEqual(1);
+        expect(sendParams[0]).toEqual({
+          input: {
+            symbol: 'ABCDEF',
+          },
         });
       });
     });

@@ -1,10 +1,6 @@
 import { CreateOrder, Order } from '../../../../src/code/domain/order/model/order';
 import { randomFromList, randomNumber, randomString, randomSymbol } from '../../random-test-builder';
 
-export const buildDefaultCreateOrder = (): CreateOrder => {
-  return buildDefaultCreateMarketOrder();
-};
-
 export const buildDefaultCreateMarketOrder = (): CreateOrder => {
   return {
     exchange: randomFromList(['Binance']),

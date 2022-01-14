@@ -10,7 +10,7 @@ import { BinanceAnnouncementClient } from '../code/infrastructure/announcement/e
 import { HttpAnnouncementClient } from '../code/infrastructure/announcement/http-announcement-client';
 import { GetAnnouncementService } from '../code/domain/announcement/get-announcement-service';
 
-const binanceAnnouncementClient = new BinanceAnnouncementClient(process.env.BINANCE_WEBSITE_URL);
+const binanceAnnouncementClient = new BinanceAnnouncementClient();
 const announcementClient = new HttpAnnouncementClient([binanceAnnouncementClient]);
 const getAnnouncementService = new GetAnnouncementService(announcementClient);
 

@@ -41,12 +41,12 @@ describe('EbCoinListingPublisher', () => {
         expect(sendParams[0].input).toEqual({
           Entries: [
             {
-              Source: 'hastobegood.cryptodetector',
+              Source: 'hastobegood.cryptobotbloodhound',
               DetailType: 'NewCoinListing',
               Detail: JSON.stringify({ data: coinListing1 }),
             },
             {
-              Source: 'hastobegood.cryptodetector',
+              Source: 'hastobegood.cryptobotbloodhound',
               DetailType: 'NewCoinListing',
               Detail: JSON.stringify({ data: coinListing2 }),
             },

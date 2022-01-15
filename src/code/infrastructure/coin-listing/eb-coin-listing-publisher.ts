@@ -17,7 +17,7 @@ export class EbCoinListingPublisher implements CoinListingPublisher {
 
   #buildEntry(coinListing: CoinListing): PutEventsRequestEntry {
     return {
-      Source: 'hastobegood.cryptodetector',
+      Source: 'hastobegood.cryptobotbloodhound',
       DetailType: 'NewCoinListing',
       Detail: JSON.stringify(this.#buildEvent(coinListing)),
     };

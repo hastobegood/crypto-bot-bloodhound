@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  crypto-detector
+  crypto-bot-bloodhound
 
 Transform:
   - AWS::Serverless-2016-10-31
@@ -139,7 +139,7 @@ Resources:
           Properties:
             Pattern:
               source:
-                - hastobegood.cryptodetector
+                - hastobegood.cryptobotbloodhound
               detail-type:
                 - NewCoinListing
       Policies:

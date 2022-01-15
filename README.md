@@ -1,16 +1,16 @@
-# Crypto Detector
+# Crypto Bot Bloodhound
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-detector&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-detector)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-detector&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-detector)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-detector&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-detector)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-detector&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-detector)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-bot-bloodhound&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-bot-bloodhound)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-bot-bloodhound&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-bot-bloodhound)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-bot-bloodhound&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-bot-bloodhound)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-bot-bloodhound&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-bot-bloodhound)
 
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-detector&metric=coverage)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-detector)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-detector&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-detector)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-detector&metric=bugs)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-detector)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-detector&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-detector)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-detector&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-detector)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-detector&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-detector)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-bot-bloodhound&metric=coverage)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-bot-bloodhound)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-bot-bloodhound&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-bot-bloodhound)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-bot-bloodhound&metric=bugs)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-bot-bloodhound)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-bot-bloodhound&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-bot-bloodhound)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-bot-bloodhound&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-bot-bloodhound)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=hastobegood_crypto-bot-bloodhound&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=hastobegood_crypto-bot-bloodhound)
 
 Crypto bot that detect new coin listing on exchanges and send buy/sell order taking advantage of the "listing pump".
 

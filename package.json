@@ -22,7 +22,7 @@
     "@aws-sdk/client-dynamodb": "^3.46.0",
     "@aws-sdk/client-eventbridge": "^3.46.0",
     "@aws-sdk/client-secrets-manager": "^3.46.0",
-    "@aws-sdk/client-sns": "^3.46.0",
+    "@aws-sdk/client-sns": "^3.47.0",
     "@aws-sdk/lib-dynamodb": "^3.46.0",
     "@hastobegood/crypto-clients-binance": "^0.2.3",
     "aws-xray-sdk-core": "^3.3.4",

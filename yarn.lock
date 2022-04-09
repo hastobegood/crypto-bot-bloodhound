@@ -2581,22 +2581,10 @@ convert-source-map@^1.4.0, convert-source-map@^1.6.0, convert-source-map@^1.7.0:
   dependencies:
     safe-buffer "~5.1.1"
 
-copy-webpack-plugin@*:
+copy-webpack-plugin@*, copy-webpack-plugin@^10.2.4:
   version "10.2.4"
   resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-10.2.4.tgz#6c854be3fdaae22025da34b9112ccf81c63308fe"
   integrity sha512-xFVltahqlsRcyyJqQbDY6EYTtyQZF9rf+JPjwHObLdPFMEISqkFkr7mFoVOC6BfYS/dNThyoQKvziugm+OnwBg==
-  dependencies:
-    fast-glob "^3.2.7"
-    glob-parent "^6.0.1"
-    globby "^12.0.2"
-    normalize-path "^3.0.0"
-    schema-utils "^4.0.0"
-    serialize-javascript "^6.0.0"
-
-copy-webpack-plugin@^10.0.0:
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-10.0.0.tgz#f25a29ca2398a6ca31183b62e76adacb53b981d1"
-  integrity sha512-tuCVuFMBbRsb7IH0q1CUb50/Skv+7a6c7DJ+xi4fAbOzNLTYVMUTPnf8uGvKPtmqTvzYBrfEFo7YgP4TsUWmtg==
   dependencies:
     fast-glob "^3.2.7"
     glob-parent "^6.0.1"

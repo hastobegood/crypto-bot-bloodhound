@@ -4680,10 +4680,10 @@ semver@^6.0.0, semver@^6.3.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
 
-serialize-error@^9.0.0:
-  version "9.0.0"
-  resolved "https://registry.yarnpkg.com/serialize-error/-/serialize-error-9.0.0.tgz#9b8a83dcbb2a61fa50d016b155f1b2884587825e"
-  integrity sha512-g2bg8Axwii7KlEkLAKXbLuGXS8rkvEdOY7VAlh8OpvG7lZH6Fcj3cyWVPU7HhiJMIe/1udV+Te3ON0Ch3TFlWQ==
+serialize-error@^9.1.1:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/serialize-error/-/serialize-error-9.1.1.tgz#b66744b6287b538996a153103e67af7179d0831a"
+  integrity sha512-6uZQLGyUkNA4N+Zii9fYukmNu9PEA1F5rqcwXzN/3LtBjwl2dFBbVZ1Zyn08/CGkB4H440PIemdOQBt1Wvjbrg==
   dependencies:
     type-fest "^2.5.3"
 

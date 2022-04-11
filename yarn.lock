@@ -1333,10 +1333,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@hastobegood/crypto-clients-binance@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@hastobegood/crypto-clients-binance/-/crypto-clients-binance-0.6.0.tgz#48fc003d37f7c0c465a3691d760759f6dbd02f3a"
-  integrity sha512-mYVsKpni6Tn4ijK04Vn6kNDT9O7Qg6rNjfSs28J7A+vLntaGQRlD+tqcEkq1cZ/oB4Z9DQgBQCbKHiYJPU+0AQ==
+"@hastobegood/crypto-clients-binance@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@hastobegood/crypto-clients-binance/-/crypto-clients-binance-0.7.0.tgz#f4c3f2870d7518f111ac299275a9650373352e96"
+  integrity sha512-V7vAspX+7QDYFjiNrJP7cD8zG6n8f21V1NsR4dA3LzC0Pr+OxJIgWDNMP7PAdvuI6wPLUQOKektJIm9Jfzc23w==
   dependencies:
     axios "^0.26.1"
 

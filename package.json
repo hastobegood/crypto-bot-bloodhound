@@ -27,7 +27,7 @@
     "@hastobegood/crypto-clients-binance": "^0.2.3",
     "aws-xray-sdk-core": "^3.3.6",
     "axios": "^0.27.2",
-    "keyv": "^4.0.5",
+    "keyv": "^4.3.0",
     "lodash": "^4.17.21",
     "node-html-parser": "^5.2.0",
     "pino": "^7.6.3",

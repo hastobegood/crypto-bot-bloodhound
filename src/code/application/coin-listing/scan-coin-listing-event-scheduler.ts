@@ -1,6 +1,7 @@
-import { logger } from '../../configuration/log/logger';
-import { ScanCoinListingService } from '../../domain/coin-listing/scan-coin-listing-service';
+import { logger } from '@hastobegood/crypto-bot-artillery/common';
+
 import { CoinListingExchange } from '../../domain/coin-listing/model/coin-listing';
+import { ScanCoinListingService } from '../../domain/coin-listing/scan-coin-listing-service';
 
 const exchanges: CoinListingExchange[] = ['Binance'];
 

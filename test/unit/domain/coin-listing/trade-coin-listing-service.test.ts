@@ -1,14 +1,14 @@
-import { mocked } from 'ts-jest/utils';
+import { Order } from '@hastobegood/crypto-bot-artillery/order';
+import { buildDefaultOrder } from '@hastobegood/crypto-bot-artillery/test/builders';
 import { expect } from '@jest/globals';
+import MockDate from 'mockdate';
+
 import { CoinListing } from '../../../../src/code/domain/coin-listing/model/coin-listing';
-import { buildDefaultCoinListing } from '../../../builders/domain/coin-listing/coin-listing-builder';
 import { TradeCoinListingService } from '../../../../src/code/domain/coin-listing/trade-coin-listing-service';
 import { CreateOrderService } from '../../../../src/code/domain/order/create-order-service';
-import MockDate from 'mockdate';
-import { Order } from '../../../../src/code/domain/order/model/order';
-import { buildDefaultOrder } from '../../../builders/domain/order/order-test-builder';
+import { buildDefaultCoinListing } from '../../../builders/domain/coin-listing/coin-listing-builder';
 
-const createOrderServiceMock = mocked(jest.genMockFromModule<CreateOrderService>('../../../../src/code/domain/order/create-order-service'), true);
+const createOrderServiceMock = jest.mocked(jest.genMockFromModule<CreateOrderService>('../../../../src/code/domain/order/create-order-service'), true);
 
 let tradeCoinListingService: TradeCoinListingService;
 beforeEach(() => {
@@ -64,8 +64,8 @@ describe('TradeCoinListingService', () => {
 
         expect(createOrderServiceMock.create).toHaveBeenCalledTimes(5);
         let createParams = createOrderServiceMock.create.mock.calls[0];
-        expect(createParams.length).toEqual(1);
-        expect(createParams[0]).toEqual({
+        expect(createParams?.length).toEqual(1);
+        expect(createParams?.[0]).toEqual({
           exchange: coinListing.exchange,
           symbol: `${coinListing.coin}#XXX`,
           side: 'Buy',
@@ -74,8 +74,8 @@ describe('TradeCoinListingService', () => {
           requestedQuantity: 20,
         });
         createParams = createOrderServiceMock.create.mock.calls[1];
-        expect(createParams.length).toEqual(1);
-        expect(createParams[0]).toEqual({
+        expect(createParams?.length).toEqual(1);
+        expect(createParams?.[0]).toEqual({
           exchange: coinListing.exchange,
           symbol: `${coinListing.coin}#XXX`,
           side: 'Buy',
@@ -84,8 +84,8 @@ describe('TradeCoinListingService', () => {
           requestedQuantity: 20,
         });
         createParams = createOrderServiceMock.create.mock.calls[2];
-        expect(createParams.length).toEqual(1);
-        expect(createParams[0]).toEqual({
+        expect(createParams?.length).toEqual(1);
+        expect(createParams?.[0]).toEqual({
           exchange: coinListing.exchange,
           symbol: `${coinListing.coin}#XXX`,
           side: 'Buy',
@@ -94,26 +94,26 @@ describe('TradeCoinListingService', () => {
           requestedQuantity: 20,
         });
         createParams = createOrderServiceMock.create.mock.calls[3];
-        expect(createParams.length).toEqual(1);
-        expect(createParams[0]).toEqual({
+        expect(createParams?.length).toEqual(1);
+        expect(createParams?.[0]).toEqual({
           exchange: coinListing.exchange,
           symbol: `${coinListing.coin}#XXX`,
           side: 'Sell',
           type: 'Limit',
           quote: false,
-          requestedQuantity: buyOrder.executedQuantity!,
-          requestedPrice: buyOrder.executedPrice! * 1.5,
+          requestedQuantity: buyOrder.executedQuantity,
+          requestedPrice: (buyOrder.executedPrice || 0) * 1.5,
         });
         createParams = createOrderServiceMock.create.mock.calls[4];
-        expect(createParams.length).toEqual(1);
-        expect(createParams[0]).toEqual({
+        expect(createParams?.length).toEqual(1);
+        expect(createParams?.[0]).toEqual({
           exchange: coinListing.exchange,
           symbol: `${coinListing.coin}#XXX`,
           side: 'Sell',
           type: 'Limit',
           quote: false,
-          requestedQuantity: buyOrder.executedQuantity!,
-          requestedPrice: buyOrder.executedPrice! * 1.5,
+          requestedQuantity: buyOrder.executedQuantity,
+          requestedPrice: (buyOrder.executedPrice || 0) * 1.5,
         });
       });
     });

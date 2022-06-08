@@ -1,8 +1,9 @@
-import { logger } from '../../configuration/log/logger';
+import { logger } from '@hastobegood/crypto-bot-artillery/common';
 import { EventBridgeEvent } from 'aws-lambda';
-import { CoinListingEvent } from '../../infrastructure/coin-listing/eb-coin-listing-publisher';
-import { NotifyCoinListingService } from '../../domain/coin-listing/notify-coin-listing-service';
+
 import { CoinListing } from '../../domain/coin-listing/model/coin-listing';
+import { NotifyCoinListingService } from '../../domain/coin-listing/notify-coin-listing-service';
+import { CoinListingEvent } from '../../infrastructure/coin-listing/eb-coin-listing-publisher';
 
 export class NotifyCoinListingRecordConsumer {
   constructor(private notifyCoinListingService: NotifyCoinListingService) {}

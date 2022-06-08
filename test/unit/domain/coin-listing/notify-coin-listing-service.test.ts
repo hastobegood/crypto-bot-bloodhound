@@ -1,11 +1,11 @@
-import { mocked } from 'ts-jest/utils';
 import { expect } from '@jest/globals';
-import { CoinListing } from '../../../../src/code/domain/coin-listing/model/coin-listing';
-import { buildDefaultCoinListing } from '../../../builders/domain/coin-listing/coin-listing-builder';
-import { NotifyCoinListingService } from '../../../../src/code/domain/coin-listing/notify-coin-listing-service';
-import { CoinListingNotifier } from '../../../../src/code/domain/coin-listing/coin-listing-notifier';
 
-const coinListingNotifierMock = mocked(jest.genMockFromModule<CoinListingNotifier>('../../../../src/code/domain/coin-listing/coin-listing-notifier'), true);
+import { CoinListingNotifier } from '../../../../src/code/domain/coin-listing/coin-listing-notifier';
+import { CoinListing } from '../../../../src/code/domain/coin-listing/model/coin-listing';
+import { NotifyCoinListingService } from '../../../../src/code/domain/coin-listing/notify-coin-listing-service';
+import { buildDefaultCoinListing } from '../../../builders/domain/coin-listing/coin-listing-builder';
+
+const coinListingNotifierMock = jest.mocked(jest.genMockFromModule<CoinListingNotifier>('../../../../src/code/domain/coin-listing/coin-listing-notifier'), true);
 
 let notifyCoinListingService: NotifyCoinListingService;
 beforeEach(() => {
@@ -27,8 +27,8 @@ describe('NotifyCoinListingService', () => {
 
       expect(coinListingNotifierMock.notify).toHaveBeenCalledTimes(1);
       const notifyParams = coinListingNotifierMock.notify.mock.calls[0];
-      expect(notifyParams.length).toEqual(1);
-      expect(notifyParams[0]).toEqual(coinListing);
+      expect(notifyParams?.length).toEqual(1);
+      expect(notifyParams?.[0]).toEqual(coinListing);
     });
   });
 });

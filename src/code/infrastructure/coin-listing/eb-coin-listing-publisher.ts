@@ -1,6 +1,7 @@
-import { CoinListing } from '../../domain/coin-listing/model/coin-listing';
-import { CoinListingPublisher } from '../../domain/coin-listing/coin-listing-publisher';
 import { EventBridgeClient, PutEventsCommand, PutEventsCommandInput, PutEventsRequestEntry } from '@aws-sdk/client-eventbridge';
+
+import { CoinListingPublisher } from '../../domain/coin-listing/coin-listing-publisher';
+import { CoinListing } from '../../domain/coin-listing/model/coin-listing';
 
 export class EbCoinListingPublisher implements CoinListingPublisher {
   constructor(private ebClient: EventBridgeClient) {}

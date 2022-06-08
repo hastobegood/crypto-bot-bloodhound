@@ -1,7 +1,8 @@
 import { BatchWriteCommand, BatchWriteCommandInput, DynamoDBDocumentClient, GetCommand, GetCommandInput } from '@aws-sdk/lib-dynamodb';
+import { chunk } from 'lodash-es';
+
 import { CoinListingRepository } from '../../domain/coin-listing/coin-listing-repository';
 import { CoinListing } from '../../domain/coin-listing/model/coin-listing';
-import { chunk } from 'lodash';
 
 export class DdbCoinListingRepository implements CoinListingRepository {
   constructor(private tableName: string, private ddbClient: DynamoDBDocumentClient) {}
@@ -17,7 +18,7 @@ export class DdbCoinListingRepository implements CoinListingRepository {
 
     const getOutput = await this.ddbClient.send(new GetCommand(getInput));
 
-    return getOutput.Item ? this.#convertFromItemFormat(getOutput.Item.data) : null;
+    return getOutput.Item ? this.#convertFromItemFormat(getOutput.Item['data']) : null;
   }
 
   async saveAll(coinListings: CoinListing[]): Promise<void> {

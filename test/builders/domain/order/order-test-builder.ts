@@ -1,5 +1,6 @@
-import { CreateOrder, Order } from '../../../../src/code/domain/order/model/order';
-import { randomFromList, randomNumber, randomString, randomSymbol } from '../../random-test-builder';
+import { randomBoolean, randomFromList, randomNumber, randomSymbol } from '@hastobegood/crypto-bot-artillery/test/builders';
+
+import { CreateOrder } from '../../../../src/code/domain/order/model/order';
 
 export const buildDefaultCreateMarketOrder = (): CreateOrder => {
   return {
@@ -7,8 +8,8 @@ export const buildDefaultCreateMarketOrder = (): CreateOrder => {
     symbol: randomSymbol(),
     side: 'Buy',
     type: 'Market',
-    quote: false,
-    requestedQuantity: randomNumber(1, 100),
+    quote: randomBoolean(),
+    requestedQuantity: randomNumber(),
   };
 };
 
@@ -19,50 +20,7 @@ export const buildDefaultCreateLimitOrder = (): CreateOrder => {
     side: 'Buy',
     type: 'Limit',
     quote: false,
-    requestedQuantity: randomNumber(1, 100),
-    requestedPrice: randomNumber(10, 1_000),
-  };
-};
-
-export const buildDefaultOrder = (): Order => {
-  return buildDefaultMarketOrder();
-};
-
-export const buildDefaultMarketOrder = (): Order => {
-  return {
-    id: randomString(20),
-    exchange: randomFromList(['Binance']),
-    symbol: randomSymbol(),
-    side: 'Buy',
-    type: 'Market',
-    status: 'Filled',
-    creationDate: new Date(),
-    quote: false,
-    requestedQuantity: randomNumber(1, 100),
-    transactionDate: new Date(),
-    externalId: randomString(20),
-    externalStatus: 'FILLED',
-    executedQuantity: randomNumber(1, 100),
-    executedPrice: randomNumber(10, 1_000),
-  };
-};
-
-export const buildDefaultLimitOrder = (): Order => {
-  return {
-    id: randomString(20),
-    exchange: randomFromList(['Binance']),
-    symbol: randomSymbol(),
-    side: 'Buy',
-    type: 'Limit',
-    status: 'Filled',
-    creationDate: new Date(),
-    quote: false,
-    requestedQuantity: randomNumber(1, 100),
-    requestedPrice: randomNumber(10, 1_000),
-    transactionDate: new Date(),
-    externalId: randomString(20),
-    externalStatus: 'FILLED',
-    executedQuantity: randomNumber(1, 100),
-    executedPrice: randomNumber(10, 1_000),
+    requestedQuantity: randomNumber(),
+    requestedPrice: randomNumber(),
   };
 };

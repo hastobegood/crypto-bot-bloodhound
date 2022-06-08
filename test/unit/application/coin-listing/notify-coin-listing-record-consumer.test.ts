@@ -1,11 +1,11 @@
-import { mocked } from 'ts-jest/utils';
+import { EventBridgeEvent } from 'aws-lambda/trigger/eventbridge';
+
 import { NotifyCoinListingRecordConsumer } from '../../../../src/code/application/coin-listing/notify-coin-listing-record-consumer';
 import { NotifyCoinListingService } from '../../../../src/code/domain/coin-listing/notify-coin-listing-service';
 import { CoinListingEvent } from '../../../../src/code/infrastructure/coin-listing/eb-coin-listing-publisher';
 import { buildDefaultCoinListingEvent } from '../../../builders/infrastructure/coin-listing/coin-listing-event-builder';
-import { EventBridgeEvent } from 'aws-lambda/trigger/eventbridge';
 
-const notifyCoinListingServiceMock = mocked(jest.genMockFromModule<NotifyCoinListingService>('../../../../src/code/domain/coin-listing/notify-coin-listing-service'), true);
+const notifyCoinListingServiceMock = jest.mocked(jest.genMockFromModule<NotifyCoinListingService>('../../../../src/code/domain/coin-listing/notify-coin-listing-service'), true);
 
 let notifyCoinListingRecordConsumer: NotifyCoinListingRecordConsumer;
 beforeEach(() => {
@@ -37,8 +37,8 @@ describe('NotifyCoinListingRecordConsumer', () => {
 
         expect(notifyCoinListingServiceMock.notify).toHaveBeenCalledTimes(1);
         const notifyParams = notifyCoinListingServiceMock.notify.mock.calls[0];
-        expect(notifyParams.length).toEqual(1);
-        expect(notifyParams[0]).toEqual({
+        expect(notifyParams?.length).toEqual(1);
+        expect(notifyParams?.[0]).toEqual({
           ...coinListingEvent.data,
           creationDate: new Date(coinListingEvent.data.creationDate),
           listingDate: new Date(coinListingEvent.data.listingDate),
@@ -57,8 +57,8 @@ describe('NotifyCoinListingRecordConsumer', () => {
 
         expect(notifyCoinListingServiceMock.notify).toHaveBeenCalledTimes(1);
         const notifyParams = notifyCoinListingServiceMock.notify.mock.calls[0];
-        expect(notifyParams.length).toEqual(1);
-        expect(notifyParams[0]).toEqual({
+        expect(notifyParams?.length).toEqual(1);
+        expect(notifyParams?.[0]).toEqual({
           ...coinListingEvent.data,
           creationDate: new Date(coinListingEvent.data.creationDate),
           listingDate: new Date(coinListingEvent.data.listingDate),

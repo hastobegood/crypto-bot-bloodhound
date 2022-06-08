@@ -1,7 +1,10 @@
-import { logger } from '../../configuration/log/logger';
-import { CoinListing } from './model/coin-listing';
+import { logger } from '@hastobegood/crypto-bot-artillery/common';
+import { Order } from '@hastobegood/crypto-bot-artillery/order';
+
 import { CreateOrderService } from '../order/create-order-service';
-import { CreateOrder, Order } from '../order/model/order';
+import { CreateOrder } from '../order/model/order';
+
+import { CoinListing } from './model/coin-listing';
 
 export class TradeCoinListingService {
   constructor(private quoteAsset: string, private quoteAssetQuantity: number, private retryIntervalMilliseconds: number, private createOrderService: CreateOrderService) {}

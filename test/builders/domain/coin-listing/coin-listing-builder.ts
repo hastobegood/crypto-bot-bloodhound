@@ -1,10 +1,11 @@
-import { randomFromList, randomString } from '../../random-test-builder';
+import { randomString, randomFromList, randomAsset } from '@hastobegood/crypto-bot-artillery/test/builders';
+
 import { CoinListing } from '../../../../src/code/domain/coin-listing/model/coin-listing';
 
 export const buildDefaultCoinListing = (): CoinListing => {
   return {
-    id: randomString(10),
-    coin: randomString(5),
+    id: randomString(),
+    coin: randomAsset(),
     exchange: randomFromList(['Binance']),
     creationDate: new Date(),
     listingDate: new Date(),

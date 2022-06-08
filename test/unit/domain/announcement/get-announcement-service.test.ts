@@ -1,10 +1,9 @@
-import { mocked } from 'ts-jest/utils';
+import { AnnouncementClient } from '../../../../src/code/domain/announcement/announcement-client';
 import { GetAnnouncementService } from '../../../../src/code/domain/announcement/get-announcement-service';
 import { Announcement } from '../../../../src/code/domain/announcement/model/announcement';
-import { AnnouncementClient } from '../../../../src/code/domain/announcement/announcement-client';
 import { buildDefaultAnnouncements } from '../../../builders/domain/announcement/announcement-builder';
 
-const announcementClientMock = mocked(jest.genMockFromModule<AnnouncementClient>('../../../../src/code/domain/announcement/announcement-client'), true);
+const announcementClientMock = jest.mocked(jest.genMockFromModule<AnnouncementClient>('../../../../src/code/domain/announcement/announcement-client'), true);
 
 let getAnnouncementService: GetAnnouncementService;
 beforeEach(() => {
@@ -29,8 +28,8 @@ describe('GetAnnouncementService', () => {
 
         expect(announcementClientMock.getAllByExchange).toHaveBeenCalledTimes(1);
         const getAllByExchangeParams = announcementClientMock.getAllByExchange.mock.calls[0];
-        expect(getAllByExchangeParams.length).toEqual(1);
-        expect(getAllByExchangeParams[0]).toEqual('Binance');
+        expect(getAllByExchangeParams?.length).toEqual(1);
+        expect(getAllByExchangeParams?.[0]).toEqual('Binance');
       });
     });
   });

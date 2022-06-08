@@ -1,11 +1,11 @@
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { mocked } from 'ts-jest/utils';
-import { CoinListingEntity, DdbCoinListingRepository } from '../../../../src/code/infrastructure/coin-listing/ddb-coin-listing-repository';
-import { buildDefaultCoinListingEntity } from '../../../builders/infrastructure/coin-listing/coin-listing-entity-builder';
-import { CoinListing } from '../../../../src/code/domain/coin-listing/model/coin-listing';
-import { buildDefaultCoinListing } from '../../../builders/domain/coin-listing/coin-listing-builder';
 
-const ddbClientMock = mocked(jest.genMockFromModule<DynamoDBDocumentClient>('@aws-sdk/lib-dynamodb'), true);
+import { CoinListing } from '../../../../src/code/domain/coin-listing/model/coin-listing';
+import { CoinListingEntity, DdbCoinListingRepository } from '../../../../src/code/infrastructure/coin-listing/ddb-coin-listing-repository';
+import { buildDefaultCoinListing } from '../../../builders/domain/coin-listing/coin-listing-builder';
+import { buildDefaultCoinListingEntity } from '../../../builders/infrastructure/coin-listing/coin-listing-entity-builder';
+
+const ddbClientMock = jest.mocked(jest.genMockFromModule<DynamoDBDocumentClient>('@aws-sdk/lib-dynamodb'), true);
 
 let coinListingRepository: DdbCoinListingRepository;
 beforeEach(() => {
@@ -29,8 +29,8 @@ describe('DdbCoinListingRepository', () => {
 
         expect(ddbClientMock.send).toHaveBeenCalledTimes(1);
         const sendParams = ddbClientMock.send.mock.calls[0];
-        expect(sendParams.length).toEqual(1);
-        expect(sendParams[0].input).toEqual({
+        expect(sendParams?.length).toEqual(1);
+        expect(sendParams?.[0].input).toEqual({
           TableName: 'my-table',
           Key: {
             pk: 'CoinListing::123',
@@ -63,8 +63,8 @@ describe('DdbCoinListingRepository', () => {
 
         expect(ddbClientMock.send).toHaveBeenCalledTimes(1);
         const sendParams = ddbClientMock.send.mock.calls[0];
-        expect(sendParams.length).toEqual(1);
-        expect(sendParams[0].input).toEqual({
+        expect(sendParams?.length).toEqual(1);
+        expect(sendParams?.[0].input).toEqual({
           TableName: 'my-table',
           Key: {
             pk: 'CoinListing::123',
@@ -90,8 +90,8 @@ describe('DdbCoinListingRepository', () => {
 
         expect(ddbClientMock.send).toHaveBeenCalledTimes(1);
         const sendParams = ddbClientMock.send.mock.calls[0];
-        expect(sendParams.length).toEqual(1);
-        expect(sendParams[0].input).toEqual({
+        expect(sendParams?.length).toEqual(1);
+        expect(sendParams?.[0].input).toEqual({
           RequestItems: {
             'my-table': [
               {

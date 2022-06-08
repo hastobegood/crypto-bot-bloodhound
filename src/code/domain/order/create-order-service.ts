@@ -7,7 +7,7 @@ export class CreateOrderService {
   constructor(private sendOrderClient: SendOrderClient) {}
 
   async create(createOrder: CreateOrder): Promise<Order> {
-    const sendOrder = await this.#buildSendOrder(createOrder);
+    const sendOrder = this.#buildSendOrder(createOrder);
 
     logger.info(sendOrder, 'Create order');
     const order = await this.sendOrderClient.send(sendOrder);

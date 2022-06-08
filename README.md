@@ -26,7 +26,7 @@ Supported deployment modes:
 
 ### Requirements
 
-- NodeJS 14.x
+- NodeJS 16.x
 - Yarn 1.x
 - AWS SAM 1.x
 

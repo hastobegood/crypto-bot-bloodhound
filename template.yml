@@ -156,7 +156,7 @@ Resources:
         Minify: true
         SourceMap: true
         EntryPoints:
-          - trade-coin-listing-handler-handler.ts
+          - trade-coin-listing-handler.ts
 
   CoinListingStateMachine:
     Type: AWS::Serverless::StateMachine

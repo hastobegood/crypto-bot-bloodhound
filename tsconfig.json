@@ -1,17 +1,33 @@
 {
-  "extends": "@tsconfig/node16-strictest-esm/tsconfig.json",
   "compilerOptions": {
+    "target": "ES2021",
+    "module": "ES2020",
+    "lib": [
+      "ES2021"
+    ],
     "rootDir": "./",
     "outDir": "./out",
     "moduleResolution": "node",
     "sourceMap": true,
     "allowJs": true,
     "removeComments": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
     "resolveJsonModule": true,
-    "importsNotUsedAsValues": "remove",
-    "exactOptionalPropertyTypes": false,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "checkJs": true
   },
   "include": [
     "./**/*.ts"

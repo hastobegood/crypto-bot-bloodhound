@@ -37,7 +37,6 @@
     "source-map-support": "^0.5.21"
   },
   "devDependencies": {
-    "@tsconfig/node16-strictest-esm": "^1.0.1",
     "@types/aws-lambda": "^8.10.99",
     "@types/jest": "^28.1.1",
     "@types/lodash-es": "^4.17.6",

@@ -40,7 +40,7 @@
     "@types/aws-lambda": "^8.10.99",
     "@types/jest": "^28.1.1",
     "@types/lodash-es": "^4.17.6",
-    "@types/node": "16",
+    "@types/node": "17",
     "@types/randomstring": "^1.1.8",
     "@types/source-map-support": "^0.5.4",
     "@typescript-eslint/eslint-plugin": "^5.27.1",

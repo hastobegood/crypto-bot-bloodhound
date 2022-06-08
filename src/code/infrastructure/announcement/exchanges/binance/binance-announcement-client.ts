@@ -1,7 +1,8 @@
-import { axiosInstance } from '../../../../configuration/http/axios';
-import { ExchangeAnnouncementClient } from '../exchange-announcement-client';
 import { HTMLElement, parse } from 'node-html-parser';
+
+import { axiosInstance } from '../../../../configuration/http/axios';
 import { Announcement, AnnouncementExchange } from '../../../../domain/announcement/model/announcement';
+import { ExchangeAnnouncementClient } from '../exchange-announcement-client';
 
 const linkIds = ['link-0-0-p1', 'link-0-1-p1', 'link-0-2-p1', 'link-0-3-p1', 'link-0-4-p1', 'link-0-5-p1', 'link-0-6-p1', 'link-0-7-p1', 'link-0-8-p1', 'link-0-9-p1', 'link-0-10-p1', 'link-0-11-p1', 'link-0-12-p1', 'link-0-13-p1', 'link-0-14-p1'];
 const linkRegex = new RegExp('Binance Will List .+ \\((.+)\\).*');
@@ -32,7 +33,7 @@ export class BinanceAnnouncementClient implements ExchangeAnnouncementClient {
     const href = element?.getAttribute('href');
     if (element && href) {
       const matches = element.text.match(linkRegex);
-      if (matches && matches.length === 2) {
+      if (matches?.length === 2 && matches[1]) {
         return {
           coin: matches[1],
           url: `https://www.binance.com${href}`,
@@ -63,7 +64,7 @@ export class BinanceAnnouncementClient implements ExchangeAnnouncementClient {
     return {
       ...link,
       exchange: 'Binance',
-      date: new Date(Date.UTC(+date[1], +date[2] - 1, +date[3], +date[4], +date[5])),
+      date: new Date(Date.UTC(+date[1]!, +date[2]! - 1, +date[3]!, +date[4]!, +date[5]!)),
     };
   }
 }

@@ -1,11 +1,11 @@
-import { mocked } from 'ts-jest/utils';
-import { CoinListingEvent } from '../../../../src/code/infrastructure/coin-listing/eb-coin-listing-publisher';
-import { buildDefaultCoinListingEvent } from '../../../builders/infrastructure/coin-listing/coin-listing-event-builder';
 import { EventBridgeEvent } from 'aws-lambda/trigger/eventbridge';
+
 import { TradeCoinListingRecordConsumer } from '../../../../src/code/application/coin-listing/trade-coin-listing-record-consumer';
 import { TradeCoinListingService } from '../../../../src/code/domain/coin-listing/trade-coin-listing-service';
+import { CoinListingEvent } from '../../../../src/code/infrastructure/coin-listing/eb-coin-listing-publisher';
+import { buildDefaultCoinListingEvent } from '../../../builders/infrastructure/coin-listing/coin-listing-event-builder';
 
-const tradeCoinListingServiceMock = mocked(jest.genMockFromModule<TradeCoinListingService>('../../../../src/code/domain/coin-listing/trade-coin-listing-service'), true);
+const tradeCoinListingServiceMock = jest.mocked(jest.genMockFromModule<TradeCoinListingService>('../../../../src/code/domain/coin-listing/trade-coin-listing-service'), true);
 
 let tradeCoinListingRecordConsumer: TradeCoinListingRecordConsumer;
 beforeEach(() => {
@@ -37,8 +37,8 @@ describe('TradeCoinListingRecordConsumer', () => {
 
         expect(tradeCoinListingServiceMock.trade).toHaveBeenCalledTimes(1);
         const tradeParams = tradeCoinListingServiceMock.trade.mock.calls[0];
-        expect(tradeParams.length).toEqual(1);
-        expect(tradeParams[0]).toEqual({
+        expect(tradeParams?.length).toEqual(1);
+        expect(tradeParams?.[0]).toEqual({
           ...coinListingEvent.data,
           creationDate: new Date(coinListingEvent.data.creationDate),
           listingDate: new Date(coinListingEvent.data.listingDate),
@@ -57,8 +57,8 @@ describe('TradeCoinListingRecordConsumer', () => {
 
         expect(tradeCoinListingServiceMock.trade).toHaveBeenCalledTimes(1);
         const tradeParams = tradeCoinListingServiceMock.trade.mock.calls[0];
-        expect(tradeParams.length).toEqual(1);
-        expect(tradeParams[0]).toEqual({
+        expect(tradeParams?.length).toEqual(1);
+        expect(tradeParams?.[0]).toEqual({
           ...coinListingEvent.data,
           creationDate: new Date(coinListingEvent.data.creationDate),
           listingDate: new Date(coinListingEvent.data.listingDate),

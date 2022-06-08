@@ -1,4 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
+
 Description: >-
   crypto-bot-bloodhound
 
@@ -6,6 +7,13 @@ Transform:
   - AWS::Serverless-2016-10-31
 
 Parameters:
+  LogLevelParameter:
+    Type: String
+    Description: Functions log level
+    Default: info
+    AllowedValues:
+      - debug
+      - info
   EnvironmentParameter:
     Type: String
     Description: Environment where the stack is deployed
@@ -47,13 +55,14 @@ Mappings:
 
 Globals:
   Function:
-    Runtime: nodejs14.x
+    Runtime: nodejs16.x
     MemorySize: 128
     Timeout: 30
     AutoPublishAlias: Live
     Tracing: !If [ TracingCondition, Active, PassThrough ]
     Environment:
       Variables:
+        LOG_LEVEL: !Ref LogLevelParameter
         ENV: !Ref EnvironmentParameter
         REGION: !Ref AWS::Region
         TRACING: !Ref TracingParameter
@@ -63,8 +72,8 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: Scan coin listing function
-      CodeUri: dist/webpack/scan-coin-listing-handler
-      Handler: app.handler
+      CodeUri: src/handlers
+      Handler: scan-coin-listing-handler.handler
       ReservedConcurrentExecutions: 1
       Environment:
         Variables:
@@ -82,13 +91,21 @@ Resources:
             TableName: !Ref CoinListingTable
         - EventBridgePutEventsPolicy:
             EventBusName: default
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Target: es2021
+        Minify: true
+        SourceMap: true
+        EntryPoints:
+          - scan-coin-listing-handler.ts
 
   NotifyCoinListingFunction:
     Type: AWS::Serverless::Function
     Properties:
       Description: Notify coin listing function
-      CodeUri: dist/webpack/notify-coin-listing-handler
-      Handler: app.handler
+      CodeUri: src/handlers
+      Handler: notify-coin-listing-handler.handler
       Environment:
         Variables:
           PHONE_NUMBERS: !Ref PhoneNumbersParameter
@@ -100,13 +117,21 @@ Resources:
                 - sns:Publish
               Resource:
                 - '*'
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Target: es2021
+        Minify: true
+        SourceMap: true
+        EntryPoints:
+          - notify-coin-listing-handler.ts
 
   TradeCoinListingFunction:
     Type: AWS::Serverless::Function
     Properties:
       Description: Trade coin listing function
-      CodeUri: dist/webpack/trade-coin-listing-handler
-      Handler: app.handler
+      CodeUri: src/handlers
+      Handler: trade-coin-listing-handler.handler
       MemorySize: 2048
       Timeout: 60
       Environment:
@@ -124,6 +149,14 @@ Resources:
               Action:
                 - kms:Decrypt
               Resource: !Sub arn:aws:kms:${AWS::Region}:${AWS::AccountId}:${ExchangesSecretEncryptionKeyParameter}
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        Target: es2021
+        Minify: true
+        SourceMap: true
+        EntryPoints:
+          - trade-coin-listing-handler.ts
 
   CoinListingStateMachine:
     Type: AWS::Serverless::StateMachine

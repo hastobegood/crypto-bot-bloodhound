@@ -1,7 +1,4 @@
-export type OrderExchange = 'Binance';
-export type OrderSide = 'Buy' | 'Sell';
-export type OrderType = 'Market' | 'Limit';
-export type OrderStatus = 'Waiting' | 'PartiallyFilled' | 'Filled' | 'Canceled' | 'Error' | 'Unknown';
+import { OrderExchange, OrderSide, OrderType } from '@hastobegood/crypto-bot-artillery/order';
 
 export interface CreateOrder {
   exchange: OrderExchange;
@@ -11,18 +8,4 @@ export interface CreateOrder {
   quote: boolean;
   requestedQuantity: number;
   requestedPrice?: number;
-}
-
-export interface TransientOrder extends CreateOrder {
-  id: string;
-  status: OrderStatus;
-  creationDate: Date;
-}
-
-export interface Order extends TransientOrder {
-  externalId: string;
-  externalStatus: string;
-  transactionDate: Date;
-  executedQuantity?: number;
-  executedPrice?: number;
 }

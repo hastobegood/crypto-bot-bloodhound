@@ -1,6 +1,7 @@
-import { CoinListing } from '../../domain/coin-listing/model/coin-listing';
 import { PublishCommand, PublishCommandInput, SNSClient } from '@aws-sdk/client-sns';
+
 import { CoinListingNotifier } from '../../domain/coin-listing/coin-listing-notifier';
+import { CoinListing } from '../../domain/coin-listing/model/coin-listing';
 
 export class SnsCoinListingNotifier implements CoinListingNotifier {
   constructor(private phoneNumbers: string[], private snsClient: SNSClient) {}

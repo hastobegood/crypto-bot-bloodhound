@@ -1,8 +1,7 @@
-import { mocked } from 'ts-jest/utils';
 import { ScanCoinListingEventScheduler } from '../../../../src/code/application/coin-listing/scan-coin-listing-event-scheduler';
 import { ScanCoinListingService } from '../../../../src/code/domain/coin-listing/scan-coin-listing-service';
 
-const scanCoinListingServiceMock = mocked(jest.genMockFromModule<ScanCoinListingService>('../../../../src/code/domain/coin-listing/scan-coin-listing-service'), true);
+const scanCoinListingServiceMock = jest.mocked(jest.genMockFromModule<ScanCoinListingService>('../../../../src/code/domain/coin-listing/scan-coin-listing-service'), true);
 
 let scanCoinListingEventScheduler: ScanCoinListingEventScheduler;
 beforeEach(() => {
@@ -28,8 +27,8 @@ describe('ScanCoinListingEventScheduler', () => {
 
         expect(scanCoinListingServiceMock.scan).toHaveBeenCalledTimes(1);
         const scanParams = scanCoinListingServiceMock.scan.mock.calls[0];
-        expect(scanParams.length).toEqual(1);
-        expect(scanParams[0]).toEqual('Binance');
+        expect(scanParams?.length).toEqual(1);
+        expect(scanParams?.[0]).toEqual('Binance');
       });
     });
 
@@ -43,8 +42,8 @@ describe('ScanCoinListingEventScheduler', () => {
 
         expect(scanCoinListingServiceMock.scan).toHaveBeenCalledTimes(1);
         const scanParams = scanCoinListingServiceMock.scan.mock.calls[0];
-        expect(scanParams.length).toEqual(1);
-        expect(scanParams[0]).toEqual('Binance');
+        expect(scanParams?.length).toEqual(1);
+        expect(scanParams?.[0]).toEqual('Binance');
       });
     });
   });

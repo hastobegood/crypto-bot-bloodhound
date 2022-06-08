@@ -1,6 +1,6 @@
-import { captureAWSv3Client } from 'aws-xray-sdk-core';
-import { DynamoDBDocumentClient, TranslateConfig } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient, TranslateConfig } from '@aws-sdk/lib-dynamodb';
+import { captureAWSv3Client } from 'aws-xray-sdk-core';
 
 const translateConfig: TranslateConfig = {
   marshallOptions: {
@@ -12,7 +12,7 @@ const translateConfig: TranslateConfig = {
 
 let client = DynamoDBDocumentClient.from(new DynamoDBClient({ region: process.env.REGION }), translateConfig);
 if (process.env.TRACING) {
-  client = captureAWSv3Client(client);
+  client = captureAWSv3Client(client as any);
 }
 
 export const ddbClient = client;

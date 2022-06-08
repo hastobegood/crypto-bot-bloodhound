@@ -1,10 +1,9 @@
 import { axiosInstance } from '../../../../../../src/code/configuration/http/axios';
-import { mocked } from 'ts-jest/utils';
 import { BinanceAnnouncementClient } from '../../../../../../src/code/infrastructure/announcement/exchanges/binance/binance-announcement-client';
 
 jest.mock('../../../../../../src/code/configuration/http/axios');
 
-const axiosInstanceMock = mocked(axiosInstance, true);
+const axiosInstanceMock = jest.mocked(axiosInstance, true);
 
 let binanceCoinListingClient: BinanceAnnouncementClient;
 beforeEach(() => {
@@ -36,8 +35,8 @@ describe('BinanceAnnouncementClient', () => {
 
         expect(axiosInstanceMock.get).toHaveBeenCalledTimes(1);
         const getParams = axiosInstanceMock.get.mock.calls[0];
-        expect(getParams.length).toEqual(1);
-        expect(getParams[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
+        expect(getParams?.length).toEqual(1);
+        expect(getParams?.[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
       });
     });
 
@@ -55,8 +54,8 @@ describe('BinanceAnnouncementClient', () => {
 
           expect(axiosInstanceMock.get).toHaveBeenCalledTimes(1);
           const getParams = axiosInstanceMock.get.mock.calls[0];
-          expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
+          expect(getParams?.length).toEqual(1);
+          expect(getParams?.[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
         });
       });
 
@@ -73,8 +72,8 @@ describe('BinanceAnnouncementClient', () => {
 
           expect(axiosInstanceMock.get).toHaveBeenCalledTimes(1);
           const getParams = axiosInstanceMock.get.mock.calls[0];
-          expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
+          expect(getParams?.length).toEqual(1);
+          expect(getParams?.[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
         });
       });
 
@@ -91,8 +90,8 @@ describe('BinanceAnnouncementClient', () => {
 
           expect(axiosInstanceMock.get).toHaveBeenCalledTimes(1);
           const getParams = axiosInstanceMock.get.mock.calls[0];
-          expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
+          expect(getParams?.length).toEqual(1);
+          expect(getParams?.[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
         });
       });
 
@@ -113,11 +112,11 @@ describe('BinanceAnnouncementClient', () => {
 
           expect(axiosInstanceMock.get).toHaveBeenCalledTimes(2);
           let getParams = axiosInstanceMock.get.mock.calls[0];
-          expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
+          expect(getParams?.length).toEqual(1);
+          expect(getParams?.[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
           getParams = axiosInstanceMock.get.mock.calls[1];
-          expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('https://www.binance.com/details-coin1');
+          expect(getParams?.length).toEqual(1);
+          expect(getParams?.[0]).toEqual('https://www.binance.com/details-coin1');
         });
       });
 
@@ -145,11 +144,11 @@ describe('BinanceAnnouncementClient', () => {
 
           expect(axiosInstanceMock.get).toHaveBeenCalledTimes(2);
           let getParams = axiosInstanceMock.get.mock.calls[0];
-          expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
+          expect(getParams?.length).toEqual(1);
+          expect(getParams?.[0]).toEqual('https://www.binance.com/en/support/announcement/c-48');
           getParams = axiosInstanceMock.get.mock.calls[1];
-          expect(getParams.length).toEqual(1);
-          expect(getParams[0]).toEqual('https://www.binance.com/details-coin1');
+          expect(getParams?.length).toEqual(1);
+          expect(getParams?.[0]).toEqual('https://www.binance.com/details-coin1');
         });
       });
     });

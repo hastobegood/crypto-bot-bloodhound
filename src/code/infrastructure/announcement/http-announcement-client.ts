@@ -1,6 +1,7 @@
-import { ExchangeAnnouncementClient } from './exchanges/exchange-announcement-client';
 import { AnnouncementClient } from '../../domain/announcement/announcement-client';
 import { Announcement, AnnouncementExchange } from '../../domain/announcement/model/announcement';
+
+import { ExchangeAnnouncementClient } from './exchanges/exchange-announcement-client';
 
 export class HttpAnnouncementClient implements AnnouncementClient {
   constructor(private exchangeAnnouncementClients: ExchangeAnnouncementClient[]) {}

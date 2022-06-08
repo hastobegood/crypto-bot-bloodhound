@@ -1,10 +1,10 @@
-import { mocked } from 'ts-jest/utils';
-import { buildDefaultCoinListing } from '../../../builders/domain/coin-listing/coin-listing-builder';
-import { CoinListing } from '../../../../src/code/domain/coin-listing/model/coin-listing';
 import { EventBridgeClient } from '@aws-sdk/client-eventbridge';
-import { EbCoinListingPublisher } from '../../../../src/code/infrastructure/coin-listing/eb-coin-listing-publisher';
 
-const ebClientMock = mocked(jest.genMockFromModule<EventBridgeClient>('@aws-sdk/client-eventbridge'), true);
+import { CoinListing } from '../../../../src/code/domain/coin-listing/model/coin-listing';
+import { EbCoinListingPublisher } from '../../../../src/code/infrastructure/coin-listing/eb-coin-listing-publisher';
+import { buildDefaultCoinListing } from '../../../builders/domain/coin-listing/coin-listing-builder';
+
+const ebClientMock = jest.mocked(jest.genMockFromModule<EventBridgeClient>('@aws-sdk/client-eventbridge'), true);
 
 let coinListingPublisher: EbCoinListingPublisher;
 beforeEach(() => {
@@ -37,8 +37,8 @@ describe('EbCoinListingPublisher', () => {
 
         expect(ebClientMock.send).toHaveBeenCalledTimes(1);
         const sendParams = ebClientMock.send.mock.calls[0];
-        expect(sendParams.length).toEqual(1);
-        expect(sendParams[0].input).toEqual({
+        expect(sendParams?.length).toEqual(1);
+        expect(sendParams?.[0].input).toEqual({
           Entries: [
             {
               Source: 'hastobegood.cryptobotbloodhound',

@@ -1,8 +1,9 @@
-import { CoinListingRepository } from './coin-listing-repository';
-import { CoinListing, CoinListingExchange } from './model/coin-listing';
-import { CoinListingPublisher } from './coin-listing-publisher';
 import { GetAnnouncementService } from '../announcement/get-announcement-service';
 import { Announcement } from '../announcement/model/announcement';
+
+import { CoinListingPublisher } from './coin-listing-publisher';
+import { CoinListingRepository } from './coin-listing-repository';
+import { CoinListing, CoinListingExchange } from './model/coin-listing';
 
 export class ScanCoinListingService {
   constructor(private getAnnouncementService: GetAnnouncementService, private coinListingRepository: CoinListingRepository, private coinListingPublisher: CoinListingPublisher) {}

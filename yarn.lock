@@ -445,12 +445,12 @@
   dependencies:
     tslib "^2.3.1"
 
-"@aws-sdk/lib-dynamodb@^3.105.0":
-  version "3.105.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.105.0.tgz#6395ced303607240f7b92161df471a8035f262ca"
-  integrity sha512-I+fqEOvUBwViFIqgerTj4sOKw5LDH6uBO7xl2oJNxcmR2FbH1rGLe8szI65PFRz5RtOHKN5xePJzZId7Tjm+7w==
+"@aws-sdk/lib-dynamodb@^3.186.0":
+  version "3.186.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/lib-dynamodb/-/lib-dynamodb-3.186.0.tgz#057e56960fa94f1ce569ea914d84b0a916716fe1"
+  integrity sha512-914jSaxNMiPRK+vUHsx8EvVbogAovcc51Y2bvO2L91VmRiDgNMwUrtiY/2lDTYDgbnrblRntYufIrnk7XoGIIQ==
   dependencies:
-    "@aws-sdk/util-dynamodb" "3.105.0"
+    "@aws-sdk/util-dynamodb" "3.186.0"
     tslib "^2.3.1"
 
 "@aws-sdk/middleware-content-length@3.78.0":
@@ -762,10 +762,10 @@
     "@aws-sdk/types" "3.78.0"
     tslib "^2.3.1"
 
-"@aws-sdk/util-dynamodb@3.105.0":
-  version "3.105.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.105.0.tgz#bc97bd09f7592c3d5508cb7420d9bee23997b25b"
-  integrity sha512-y6WuhUDt3TIqitCxznyVYMkfs9r8QkR6jg0oEwzYekWg7qf9JTlpL51weslSxv1pJj1vrr6ZAsJob8qkluwTtg==
+"@aws-sdk/util-dynamodb@3.186.0":
+  version "3.186.0"
+  resolved "https://registry.yarnpkg.com/@aws-sdk/util-dynamodb/-/util-dynamodb-3.186.0.tgz#c956d956957a6f32b1e5d2e5ba0a24872aef692d"
+  integrity sha512-iY7O2PmH6PsnuZJzY5dDqV0caKs3Soz3o0N5TFkxyZlpiNU1M3ZNVPlsdKfCX7btpTUn+h1j/m35afXRCMQauA==
   dependencies:
     tslib "^2.3.1"
 
@@ -5017,12 +5017,7 @@ tslib@^1.11.1, tslib@^1.8.1:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
-tslib@^2.3.0:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
-  integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
-
-tslib@^2.3.1:
+tslib@^2.3.0, tslib@^2.3.1:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
   integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==

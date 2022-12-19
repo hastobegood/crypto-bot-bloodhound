@@ -28,7 +28,7 @@
     "@aws-sdk/client-eventbridge": "^3.105.0",
     "@aws-sdk/client-secrets-manager": "^3.105.0",
     "@aws-sdk/client-sns": "^3.105.0",
-    "@aws-sdk/lib-dynamodb": "^3.105.0",
+    "@aws-sdk/lib-dynamodb": "^3.231.0",
     "@hastobegood/crypto-bot-artillery": "^0.17.0",
     "aws-xray-sdk-core": "^3.3.6",
     "axios": "^0.27.2",
